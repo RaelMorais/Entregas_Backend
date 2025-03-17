@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Tarefa</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Atualizar Tarefa</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição:</label>
+                <input type="text" name="descricao" id="descricao" value="{{ tarefa.descricao }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="status" class="form-label">Status:</label>
+                <select name="status" id="status" class="form-select">
+                    <option value="PENDENTE" {% if tarefa.status == 'PENDENTE' %}selected{% endif %}>PENDENTE</option>
+                    <option value="CONCLUIDA" {% if tarefa.status == 'CONCLUIDA' %}selected{% endif %}>CONCLUIDA</option>
+                    <option value="A FAZER" {% if tarefa.status == 'A FAZER' %}selected{% endif %}>A FAZER</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Atualizar Tarefa</button>
+                <a href="{% url 'mostrar_tarefa' %}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

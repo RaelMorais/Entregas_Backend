@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Lista de Tarefas</h1>
+
+    <ul class="list-group">
+        {% for i in tarefas %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p><strong>Descrição:</strong> {{ i.descricao }}</p>
+                        <p><strong>Status:</strong> {{ i.status }}</p>
+                    </div>
+                    
+                    <div class="btn-group" role="group">
+                        <!-- Excluir Tarefa Button -->
+                        <form action="{% url 'excluir_tarefa' i.id %}" method="POST" class="d-inline-block">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir Tarefa</button>
+                        </form>
+
+                        <!-- Atualizar Tarefa Button -->
+                        <form action="{% url 'atualizar_tarefa' i.id %}" method="POST" class="d-inline-block">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning btn-sm">Atualizar Tarefa</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Add Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
