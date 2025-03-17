@@ -1,3 +1,3 @@
-# Entregas_Backend
-
-<p> Repositorio de entregas Backend Senai. </p>
+# Exercicios_django
+At senai
+Exercies about dJango with teacher Dorivas
