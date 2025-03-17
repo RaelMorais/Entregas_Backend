@@ -1,3 +1,23 @@
-# Django class 
+# Backend Repository Senai
 
-<p>Entrega de exercicios para aula de backend no Senai Roberto Mange</p>
+Repository created for back-end activity deliveries of the PBE subject, by Professor Dorival.
+
+🛠 To develop the activities I used
+
+![My Skills](https://skillicons.dev/icons?i=js,html,css,tailwind,bootstrap,django,mysql)
+
+# 📌 Activities
+
+🔹 Activity 01
+- 
+-
+🔹 Activity 02
+- 
+- 
+🔹 Activity 03
+- 
+- 
+🔹 Activity 04
+- 
+- 
+  
