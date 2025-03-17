@@ -1,3 +1,3 @@
-# Exercicios_django
-At senai
-Exercies about dJango with teacher Dorivas
+# Django class 
+
+<p>Entrega de exercicios para aula de backend no Senai Roberto Mange</p>
