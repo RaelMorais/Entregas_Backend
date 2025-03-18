@@ -7,42 +7,89 @@ API created for backend programming class at Senai
 To use this project, you need: 
 
 ![My Skills](https://skillicons.dev/icons?i=python,django,mysql,graphql)
-````bash 
-python 3.9+
 
-pip install djangorestframework
-
-pip install mysqlclient
-
-pip install graphql
-
-
-
+Create a Venv:
+```python
+python -m venv _env 
 
 ````
+For necessary libraries in cmd uses: 
+````bash 
+pip install -r requirements.txt
+
+````
+# Basics configs
+
+```settings.py```
+
+```python
+INSTALLED_APPS = [
+'.....',
+'<app_name>', 
+'rest_framework', 
+'graphene_django',
+
+]
+```
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '<db name>',
+        'USER': '<db user>, 
+        'PASSWORD' : '<db password>', 
+        'HOST' : 'localhost', 
+        'PORT':'3306', 
+    }
+}
+
+```
+```<project name>/urls.py``` to include yours Urls. 
+```python
+
+from django.urls import path, include
+urlpatterns = [
+    '...', 
+    path('', include('<app_name>.urls')),
+
+```
+## Models 
+The Car model represents a car and its associated properties in the database. 
+This model is used to store essential details about a car such as its name, manufacturer, horsepower, category, number of doors, number of wheels, color, year of manufacture, and fuel type.
+
+### Model Fields
+
+The code model example: 
+
+```python
+
+class Car(models.Model):
+    name_car = models.CharField(max_length=255)  
+    name_factory = models.CharField(max_length=255)  
+    horsepower = models.FloatField()  
+    category = models.CharField(max_length=255)  
+    qty_ports = models.PositiveIntegerField()  
+    qty_roads = models.PositiveIntegerField()  
+    color = models.CharField(max_length=255)  
+    year = models.PositiveIntegerField()
+
+    choice_fuel = (
+        ('gs', 'Gasoline'),
+        ('gnv', 'Compressed Natural Gas'),
+        ('al', 'Ethanol'),
+        ('ev', 'Electric'),
+        ('ds', 'Diesel'),
+        ('bd', 'Biodiesel'),
+        ('bs', 'Biofuel'), 
+    )
+    fuel = models.CharField(max_length=9, choices=choice_fuel)
+
+    def __str__(self): 
+        return self.self.nome
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-** Code ** 
-
+```
 # Functions 
 
 - **Create** cars. 
