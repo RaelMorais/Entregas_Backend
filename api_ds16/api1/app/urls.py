@@ -11,4 +11,4 @@ urlpatterns = [
     path('cars/update/<int:pk>', views.update_car),
     path('cars/delete/<int:pk>', views.delete_car),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
-]
+]   
