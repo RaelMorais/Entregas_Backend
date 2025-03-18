@@ -2,6 +2,45 @@
 
 API created for backend programming class at Senai
 
+# 💥 Let's Starter
+
+To use this project, you need: 
+
+![My Skills](https://skillicons.dev/icons?i=python,django,mysql,graphql)
+````bash 
+python 3.9+
+
+pip install djangorestframework
+
+pip install mysqlclient
+
+pip install graphql
+
+
+
+
+````
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ** Code ** 
 
 # Functions 
