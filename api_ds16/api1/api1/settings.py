@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app', 
-    'rest_framework', 
-    'graphene_django',
+    'app', #Definindo o App criado dentro do Installed_Apps. 
+    'rest_framework', #Definindo RestFramework para o django reconhecer
+    'graphene_django', #Para uso do GraphQL
     
 ]
 
@@ -84,7 +84,12 @@ WSGI_APPLICATION = 'api1.wsgi.application'
 #     }
 # }
 
+'''
+Alterando o banco de dados padrão de Sqli.Lite para o Mysql, 
+Defindo o nome do banco como Api, o usuario do WorkBanch 
+como root junto com a senha, Host e a porta que rodará. 
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

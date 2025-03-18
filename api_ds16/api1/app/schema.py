@@ -10,8 +10,8 @@ class CarType(DjangoObjectType):
 
 #Definindo a consulta (Query)
 class Query(graphene.ObjectType):
-    car = graphene.Field(CarType, id=graphene.Int()) 
-    cars = graphene.List(CarType) 
+    car = graphene.Field(CarType, id=graphene.Int()) #Buscando por Id especifico 
+    cars = graphene.List(CarType) #Buscando todos os carros. 
 
     def resolve_car(self, info, id):
         return Car.objects.get(id=id) 
@@ -19,5 +19,6 @@ class Query(graphene.ObjectType):
   
     def resolve_cars(self, info):
         return Car.objects.all() 
+    
 #Definindo o schema GraphQL
 schema = graphene.Schema(query=Query)

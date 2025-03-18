@@ -3,6 +3,19 @@ from . import views
 from graphene_django.views import GraphQLView
 from app.schema import schema  
 
+'''
+Criando Urls para centralizar todos os Endpoints da API 
+
+api/ lista todos os itens.
+add/ cria um post para uma lista de carros.
+create/ para inserir um novo dado no banco.
+cars/update/<> atualizar um carro pelo Id
+cars/dele/<> deleter um carro pelo ID
+graphql/ para acessar interface do GraphQL
+
+
+
+'''
 urlpatterns = [
     path("api/", views.read_cars),
     path('cars/search/<int:pk>', views.show_car),
