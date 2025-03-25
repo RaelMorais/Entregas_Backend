@@ -7,6 +7,8 @@ from django.utils import timezone
 from datetime import timedelta
 from rest_framework import status
 from .serializers import EventSerializer, ClientSerializer, SerializerEvent, SerializerClient
+from datetime import datetime
+
 
 @api_view(['GET'])
 def get_event(request):
@@ -88,7 +90,7 @@ def put_client(request, pk):
     except Client.DoesNotExist:
         return Response({'erro':'Client Doenst exist'}, status=status.HTTP_404_NOT_FOUND)
      
-    serializer = SerializerEvent(client,data=request.data)
+    serializer = SerializerClient(client,data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -105,38 +107,49 @@ def delete_client(request, pk):
 
 @api_view(['GET'])
 def events(request):
-    now = timezone.now().date()
-    next_days = now + timedelta(days=7)
-    events = Event.objects.filter(date_init__lte=next_days, date_init__gte=now)
-    quantity = request.GET.get('quantity')
-    category = request.GET.get('category')
-    ordering = request.GET.get('ordering')
-    data = request.GET.get('data')
-    
-    if category and Category.objects.filter(name_category=category).exists():
-            events = events.filter(category__name_category=category)
-    elif category:
-            return Response ("Category not found")
-
-    
+    info = Event.objects.all()
+    categoria = request.query_params.get('categoria')
+    if categoria:
+        try:
+            category = Category.objects.get(name_category__icontains=categoria)
+            info = info.filter(category=category)
+            if not info.exists():
+                return Response("Categoria inexistente", status=404)
+        except Category.DoesNotExist:
+            return Response("Category not found", status=404)
+        
+    data = request.query_params.get('data')
     if data:
-            events = events.filter(date_init=data)
-            if not events.exists():
-                return Response("Data Not found")
-    
-    if quantity:
-            try:
-                events = events[:int(quantity)]
-            except ValueError:
-                return Response ("response do capeta")
-            
-   
-    if ordering == 'data':
-         events = events.order_by('date_init')
-    elif ordering:
-         return Response('Invalid')
+        try:
+            data_format = datetime.strptime(data, "%Y-%m-%d").date()#Transforma a data fornecida no formato correto
+            info = info.filter(date_init=data_format)
+            if not info.exists():
+                return Response("Sem dados cadastrados")
+        except ValueError:
+            return Response("Invalid date format, use YYYY-MM-DD", status=400)
 
-    serializer = EventSerializer(events, many=True)
+
+
+    # Limitar a quantidade de resultados
+    quantidade = request.query_params.get('quantidade')
+    if quantidade:
+        try:
+            # Limita o número de resultados
+            info = info[:int(quantidade)]
+            if not info.exists():
+                return Response(ModuleNotFoundError)
+        except ValueError:
+            return Response("Quantidade deve ser um número inteiro", status=400)
+
+    # Ordenação
+    ordenacao = request.query_params.get('ordenacao')
+    if ordenacao:
+        if ordenacao == 'data':
+            info = info.order_by('date_init')
+        else:
+            return Response("Ordenação inválida. Use 'data'.", status=400)
+
+    serializer = EventSerializer(info, many=True)
     return Response(serializer.data)
-   
+
 # Create your views here.
