@@ -1,23 +1,29 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Event, Client, Place, Category
-from django.utils import timezone
-from datetime import timedelta
 from rest_framework import status
 from .serializers import EventSerializer, ClientSerializer, SerializerEvent, SerializerClient
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @api_view(['GET'])
 def get_event(request):
+    '''
+    GET para renderizar todos os eventos cadastrados, por usar o 
+    >>EventSerializer<< irá renderizar os campos de Localização e Categoria com nomes. 
+
+    '''
     events = Event.objects.all()
     serializer = EventSerializer(events, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def show_event(request, pk):
+    '''
+    GET para renderizar todos os eventos cadastrados, mas permite a busca por um id especifico, 
+    usa o Try-Catch para caso o id não exista, renderizar uma mensagem informanod que não existe, caso exista irá renderizar normalmente. 
+    
+    '''
     try:
         event = Event.objects.get(pk=pk)
     except Event.DoesNotExist:
@@ -25,10 +31,15 @@ def show_event(request, pk):
     serializer = EventSerializer(event)
     return Response(serializer.data)
 
+
+
+
+
 @api_view(['POST'])
 def post_event(request):
+    '''POST para realizar a crição de um evento atráves de uma request na tabela Events. '''
     if request.method == 'POST':
-        serializer = SerializerEvent(data=request.data)
+        serializer = SerializerEvent(data=request.data) #ultiliza um serializer diferente, onde renderiza ID e não nome. 
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -36,6 +47,7 @@ def post_event(request):
     
 @api_view(['PUT'])
 def put_event(request, pk):
+    '''PUT para realizar a alteração de um evento atráves de uma request na tabela Events. '''
     try:
           event = Event.objects.get(pk=pk)
     except event.DoesNotExist:
@@ -49,6 +61,7 @@ def put_event(request, pk):
   
 @api_view(['DELETE'])
 def delete_event(request, pk):
+    '''DELETE para realizar a exclusão de um evento atráves de uma request na tabela Events. '''
     try:
           event = Event.objects.get(pk=pk)
     except Event.DoesNotExist:
@@ -105,8 +118,36 @@ def delete_client(request, pk):
     client.delete()
     return Response({'message': 'Client delete sucefull'}, status=status.HTTP_200_OK)
 
+
 @api_view(['GET'])
 def events(request):
+    """
+    View para listar eventos com filtros opcionais.
+
+    **Filtros disponíveis:**
+    - **categoria**: Filtra eventos pela categoria. O nome da categoria pode ser passado como parâmetro `categoria` na URL.
+    - **data**: Filtra eventos pela data de início. A data deve ser fornecida no formato `YYYY-MM-DD` no parâmetro `data`.
+    - **quantidade**: Limita o número de resultados. O valor deve ser um número inteiro.
+    - **ordenacao**: Ordena os eventos. A única opção disponível é `data`, que ordena por data de início.
+
+    **Respostas possíveis:**
+    - **200 OK**: Retorna a lista de eventos que atendem aos filtros aplicados.
+    - **400 Bad Request**: Quando algum dos parâmetros fornecidos tem formato incorreto (ex.: formato de data inválido ou quantidade não numérica).
+    - **404 Not Found**: Quando a categoria fornecida não é encontrada ou quando não há eventos que correspondem aos filtros.
+    
+    Parâmetros da URL:
+    - `categoria`: Nome da categoria de evento para filtrar.
+    - `data`: Data de início do evento no formato `YYYY-MM-DD` para filtrar eventos por data.
+    - `quantidade`: Número máximo de eventos a serem retornados.
+    - `ordenacao`: Critério de ordenação dos resultados, atualmente apenas "data" está disponível.
+
+    Exemplo de URL:
+    /events/?categoria=Festa&data=2025-03-25&quantidade=10&ordenacao=data
+
+    Returns:
+        Response: Lista de eventos serializados.
+    """
+    
     info = Event.objects.all()
     categoria = request.query_params.get('categoria')
     if categoria:
@@ -148,6 +189,13 @@ def events(request):
             info = info.order_by('date_init')
         else:
             return Response("Ordenação inválida. Use 'data'.", status=400)
+
+    proximo = request.query_params.get('proximo')
+    if proximo:
+        data_atual = datetime.now()
+        data_futura = data_atual + timedelta(days=7)
+        info = info.filter(date_init__gte=data_atual, date_init__lte=data_futura)
+
 
     serializer = EventSerializer(info, many=True)
     return Response(serializer.data)
