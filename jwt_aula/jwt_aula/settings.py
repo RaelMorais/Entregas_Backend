@@ -128,18 +128,19 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # jwt_example/settings.py
+# Configuração do Django REST Framework e Simple JWT para autenticação via JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Usa autenticação JWT
     ],
 }
 
 
 SIMPLE_JWT = {
-    'ACESS_TOKEN_LIFETIME': timedelta(minutes=5), 
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1), 
+    'ACESS_TOKEN_LIFETIME': timedelta(minutes=5), # Adicione validade para o Token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1), # Define o prazo do Refresh Token
     'ROTATE_REFRESH_TOKENS': False, 
     'BLACKLIST_AFTER_ROTATION': True, 
 }
 
-AUTH_USER_MODEL = 'app.UsuarioDS16'
+AUTH_USER_MODEL = 'app.UsuarioDS16'  # Usa o modelo de usuário personalizado 'UsuarioDS16' da aplicação 'app'
