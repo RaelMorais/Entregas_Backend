@@ -7,7 +7,8 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from .serializer import UsuarioSerializer
-
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .models import Usuario
 
 
 
@@ -92,6 +93,15 @@ def root(request):
     return Response(serializer.data)
 
 
+class PutDeleteClass(RetrieveUpdateDestroyAPIView): #generic view para GET, PUT, DELETE 
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+    permission_classes = [IsAuthenticated]
+
+    def destroy(self, request, *args, **kwargs):
+        usuario = self.get_object() 
+        usuario.delete()
+        return Response({"message":"Usuario dleetado com sucesso"}, status=status.HTTP_204_NO_CONTENT)
 # {
 # "username":"joao123",
 # "password":"senha123"

@@ -134,7 +134,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACESS_TOKEN_LIFETIME': timedelta(minutes=5), # Adicione validade para o Token
+    'ACESS_TOKEN_LIFETIME': timedelta(minutes=60), # Adicione validade para o Token
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1), # Define o prazo do Refresh Token
     'ROTATE_REFRESH_TOKENS': False, 
     'BLACKLIST_AFTER_ROTATION': True, 
