@@ -25,7 +25,7 @@ class Carro(models.Model):
 class Piloto (models.Model):
     nome = models.CharField(max_length=255)
     idade = models.CharField(max_length=255)
-    classificacao = models.CharField(max_length=255)
+    classificacao = models.PositiveIntegerField()
     time = models.CharField(choices=times, max_length=10)
 
     def __str__(self):

@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from .models import *
 from .serializers import * 
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import serializers
 
 
 class PilotoPagination(PageNumberPagination):
@@ -21,7 +22,12 @@ class GetPostPiloto(ListCreateAPIView):
         if nome:
            queryset = queryset.filter(nome__icontains=nome)
         return queryset
-    
+    def perform_create(self, serializer):
+        # Garantir que 'classificacao' seja comparado com um valor numérico
+        if serializer.validated_data['time'] != 'Red Bull' and serializer.validated_data['classificacao'] <= 5:
+            raise serializers.ValidationError('Somente a red bull pode ganhar')
+        serializer.save()
+        
 class GetPostCarro(ListCreateAPIView):
     queryset = Carro.objects.all()
     serializer_class = CarroSerializer
@@ -32,5 +38,14 @@ class GetPostCarro(ListCreateAPIView):
         if nome:
            queryset = queryset.filter(nome__icontains=nome)
         return queryset
+    
+    def perform_create(self, serializer):
+        # Corrigido para utilizar validated_data corretamente
+        if serializer.validated_data['nome'] != 'Red Bull Honda' and serializer.validated_data['marca'] == "Red Bull":
+            raise serializers.ValidationError('Somente a red bull pode ganhar')
+        serializer.save()
+
+
+
 # Create your views here.
 
