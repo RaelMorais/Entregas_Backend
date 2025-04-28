@@ -19,7 +19,7 @@ urlpatterns = [
    path("piloto/", views.GetPostPiloto.as_view()),
    path('carro/', views.GetPostCarro.as_view()),
    path('piloto/<int:pk>', views.PilotoUpdateDelete.as_view()),
-   path('carro/<int:pk>', views.PilotoUpdateDelete.as_view()),
+   path('carro/<int:pk>', views.CarroUpdateDelete.as_view()),
    path('redoc/', view=schema_view.with_ui('redoc', cache_timeout=0)),
    path('doc/', view=schema_view.with_ui('swagger', cache_timeout=0)),
 ]
